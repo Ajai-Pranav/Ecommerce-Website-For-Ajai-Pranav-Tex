@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ajai-pranav-tex
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ajai_pranav_tex.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: ADMIN_USERNAME
+        value: ajai
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ajai-pranav-tex-db
+          property: connectionString
+
+databases:
+  - name: ajai-pranav-tex-db
+    plan: free

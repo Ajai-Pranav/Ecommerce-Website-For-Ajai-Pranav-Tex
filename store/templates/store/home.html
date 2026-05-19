@@ -1,0 +1,933 @@
+{% extends 'store/base.html' %}
+
+{% block extra_head %}
+<style>
+/* ── HERO ── */
+.hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--black);
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(200,149,42,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(200,149,42,0.05) 0%, transparent 60%);
+}
+
+.hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(200,149,42,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,149,42,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(200,149,42,0.3);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    animation: fadeUp 0.8s ease 0.1s both;
+}
+
+.hero-title .gold { color: var(--gold); }
+
+.hero-title .outline {
+    -webkit-text-stroke: 1px rgba(245,245,240,0.3);
+    color: transparent;
+}
+
+.hero-subtitle {
+    color: var(--grey);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin: 1.5rem 0 2rem;
+    max-width: 480px;
+    animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--gold);
+    line-height: 1;
+}
+
+.hero-stat-label {
+    font-size: 0.75rem;
+    color: var(--grey);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Right side visual */
+.hero-visual {
+    position: relative;
+    animation: fadeLeft 1s ease 0.3s both;
+}
+
+.hero-card-main {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-card-main::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(200,149,42,0.1);
+    border: 1px solid rgba(200,149,42,0.2);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.trust-badge-icon {
+    width: 44px; height: 44px;
+    background: var(--gold);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.trust-badge-text strong {
+    display: block;
+    color: var(--white);
+    font-size: 0.95rem;
+}
+
+.trust-badge-text span {
+    color: var(--grey);
+    font-size: 0.8rem;
+}
+
+.floating-tag {
+    position: absolute;
+    background: var(--gold);
+    color: var(--black);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ── SCROLLING TICKER ── */
+.ticker {
+    background: var(--gold);
+    padding: 12px 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker-inner {
+    display: inline-flex;
+    animation: ticker 25s linear infinite;
+}
+
+.ticker-item {
+    color: var(--black);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0 3rem;
+}
+
+.ticker-dot {
+    color: rgba(0,0,0,0.3);
+    padding: 0 0.5rem;
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ── WHAT IS EXPORT SURPLUS ── */
+.surplus-section {
+    padding: 6rem 2rem;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+}
+
+.surplus-section::before {
+    content: 'EXPORT';
+    position: absolute;
+    top: -0.2em; right: -0.1em;
+    font-family: var(--font-display);
+    font-size: 20rem;
+    color: rgba(255,255,255,0.015);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.surplus-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.surplus-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    margin-top: 3rem;
+}
+
+.surplus-explainer {
+    color: var(--grey);
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+.surplus-explainer p { margin-bottom: 1rem; }
+
+.surplus-reasons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.surplus-reason {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: all 0.3s;
+}
+
+.surplus-reason:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+}
+
+.surplus-reason-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.surplus-reason h4 {
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.surplus-reason p {
+    color: var(--grey);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+/* ── AUTHENTICITY BANNER ── */
+.auth-banner {
+    background: linear-gradient(135deg, #1a1200, #2d1f00, #1a1200);
+    border: 1px solid rgba(200,149,42,0.4);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-banner::before {
+    content: '✓';
+    position: absolute;
+    right: -0.3em;
+    top: -0.3em;
+    font-size: 15rem;
+    color: rgba(200,149,42,0.04);
+    font-family: var(--font-display);
+    line-height: 1;
+}
+
+.auth-banner h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.auth-banner p {
+    color: #c8a06a;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 700px;
+}
+
+.auth-checks {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.auth-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold-light);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.auth-check i { color: #38a169; }
+
+/* ── CATEGORIES ── */
+.categories-section {
+    padding: 6rem 2rem;
+    background: var(--black);
+}
+
+.categories-container { max-width: 1200px; margin: 0 auto; }
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.category-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    group: true;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gold-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.category-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(200,149,42,0.15);
+}
+
+.category-card:hover::before { opacity: 1; }
+
+.cat-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+    transition: transform 0.4s;
+}
+
+.category-card:hover .cat-icon {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.cat-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.cat-desc {
+    color: var(--grey);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.cat-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: gap 0.3s;
+}
+
+.category-card:hover .cat-arrow { gap: 10px; }
+
+/* ── FEATURED ── */
+.featured-section {
+    padding: 6rem 2rem;
+    background: var(--dark);
+}
+
+.featured-container { max-width: 1200px; margin: 0 auto; }
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.featured-img-card {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--card);
+    position: relative;
+    border: 1px solid var(--border);
+    transition: all 0.4s;
+}
+
+.featured-img-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border-color: var(--gold);
+}
+
+.featured-img-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s;
+}
+
+.featured-img-card:hover img { transform: scale(1.1); }
+
+.featured-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--grey);
+    font-size: 3rem;
+}
+
+.featured-placeholder span {
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    letter-spacing: 1px;
+}
+
+/* ── ADDRESSES ── */
+.address-section {
+    padding: 6rem 2rem;
+    background: var(--black);
+}
+
+.address-container { max-width: 1200px; margin: 0 auto; }
+
+.address-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.address-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.address-card-header {
+    background: var(--gold);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.address-card-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--black);
+    letter-spacing: 2px;
+}
+
+.address-card-body {
+    padding: 1.5rem;
+}
+
+.address-text {
+    color: var(--grey);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.address-phone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, #0d0800, #1a1200, #0d0800);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(200,149,42,0.1), transparent 70%);
+}
+
+.cta-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+
+.cta-section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.cta-section p {
+    color: var(--grey);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+}
+
+.cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Scroll-triggered */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .hero-content { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { display: none; }
+    .surplus-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .surplus-reasons { grid-template-columns: 1fr; }
+    .address-cards { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-overlay"></div>
+
+    <div class="hero-content">
+        <div class="hero-text">
+            <div class="hero-badge">
+                <i class="fas fa-certificate"></i> 100% Original Brand Surplus
+            </div>
+            <h1 class="hero-title">
+                AJAI<br>
+                <span class="gold">PRANAV</span><br>
+                <span class="outline">TEX</span>
+            </h1>
+            <p class="hero-subtitle">
+                Tirupur's most trusted dealer in genuine export surplus garments. Shop original brand-quality clothing at unbeatable prices — wholesale & retail.
+            </p>
+            <div class="hero-ctas">
+                <a href="{% url 'product_category' 'tshirts' %}" class="btn-gold">
+                    <i class="fas fa-tshirt"></i> Browse Products
+                </a>
+                <a href="https://wa.me/918870165008" target="_blank" class="btn-outline">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Order
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-num">5+</div>
+                    <div class="hero-stat-label">Categories</div>
+                </div>
+                <div>
+                    <div class="hero-stat-num">100%</div>
+                    <div class="hero-stat-label">Original Brand</div>
+                </div>
+                <div>
+                    <div class="hero-stat-num">₹</div>
+                    <div class="hero-stat-label">Best Price</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-card-main">
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">🏆</div>
+                    <div class="trust-badge-text">
+                        <strong>Certified Authentic</strong>
+                        <span>100% Original Export Surplus — No Copies, No Fakes</span>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">🌍</div>
+                    <div class="trust-badge-text">
+                        <strong>International Quality</strong>
+                        <span>Garments made for US, UK & European brands</span>
+                    </div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">💰</div>
+                    <div class="trust-badge-text">
+                        <strong>Wholesale & Retail</strong>
+                        <span>Best prices for bulk & single piece orders</span>
+                    </div>
+                </div>
+                <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+                    <a href="tel:+918870165008" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+                        <div style="width:44px;height:44px;background:var(--gold-dim);border:1px solid rgba(200,149,42,0.3);border-radius:50%;display:grid;place-items:center;">
+                            <i class="fas fa-phone" style="color:var(--gold);font-size:1rem;"></i>
+                        </div>
+                        <div>
+                            <div style="color:var(--grey);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;">Call Us Now</div>
+                            <div style="color:var(--white);font-weight:700;font-size:1.1rem;">+91 88701 65008</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+    <div class="ticker-inner">
+        {% for i in "12345678" %}
+        <span class="ticker-item">T-Shirts</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">Track Pants</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">Hoodies</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">Shorts</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">Baby Garments</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">100% Original Brand</span><span class="ticker-dot">★</span>
+        <span class="ticker-item">Wholesale & Retail</span><span class="ticker-dot">★</span>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- WHAT IS EXPORT SURPLUS -->
+<section class="surplus-section">
+    <div class="surplus-container">
+        <div class="reveal">
+            <div class="section-label">Understanding Our Products</div>
+            <h2 class="section-title">WHAT IS EXPORT<br>SURPLUS?</h2>
+        </div>
+
+        <div class="surplus-grid">
+            <div class="surplus-explainer reveal">
+                <p>
+                    <strong style="color:var(--white);">Export surplus garments</strong> are clothes that were originally manufactured for export to international brands or retailers, but were later sold in local markets instead of being shipped abroad.
+                </p>
+                <p>
+                    These garments come directly from factories that produce for top brands in the <strong style="color:var(--gold);">United States, United Kingdom, and Europe</strong>. They carry the same quality, stitching standards, and fabric as what you'd find in branded stores abroad — at a fraction of the price.
+                </p>
+                <p>
+                    Tirupur, known as the "Knit City of India," is the production hub for thousands of global garment brands. We source directly from these factories, ensuring every piece is authentic and top-quality.
+                </p>
+            </div>
+
+            <div class="surplus-reasons reveal">
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">📦</div>
+                    <h4>Extra Production</h4>
+                    <p>Factories produce extra pieces beyond the ordered quantity as buffer stock — these become surplus.</p>
+                </div>
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">🔍</div>
+                    <h4>Minor Defects</h4>
+                    <p>Tiny stitching issues that don't affect wearability — rejected by brands but perfectly fine to wear.</p>
+                </div>
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">❌</div>
+                    <h4>Order Cancellations</h4>
+                    <p>When international orders get cancelled, finished inventory is released into local markets.</p>
+                </div>
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">🏷️</div>
+                    <h4>Label Mistakes</h4>
+                    <p>Packaging or labeling issues make pieces unsellable in foreign markets but perfect locally.</p>
+                </div>
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">📋</div>
+                    <h4>Leftover Stock</h4>
+                    <p>After fulfilling export orders, remaining inventory is sold as surplus — same quality, lower cost.</p>
+                </div>
+                <div class="surplus-reason">
+                    <div class="surplus-reason-icon">💎</div>
+                    <h4>Same Quality</h4>
+                    <p>Made in the same factories, on the same machines, with the same materials as exported goods.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authenticity Banner -->
+        <div class="auth-banner reveal">
+            <h3>⚡ WE DEAL ONLY IN ORIGINALS</h3>
+            <p>
+                At AJAI PRANAV TEX, we take authenticity seriously. Every single garment we sell is <strong>100% genuine export surplus</strong> — directly sourced from Tirupur's export factories. We do <strong>NOT</strong> deal in copies, imitations, first copies, or any fake products. What you buy from us is the same quality as what international brands sell abroad.
+            </p>
+            <div class="auth-checks">
+                <div class="auth-check"><i class="fas fa-check-circle"></i> Original Factory Stock</div>
+                <div class="auth-check"><i class="fas fa-check-circle"></i> No Copies or Fakes</div>
+                <div class="auth-check"><i class="fas fa-check-circle"></i> Brand-Grade Quality</div>
+                <div class="auth-check"><i class="fas fa-check-circle"></i> Direct from Tirupur Factories</div>
+                <div class="auth-check"><i class="fas fa-check-circle"></i> Best Market Price</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+    <div class="categories-container">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">What We Sell</div>
+            <h2 class="section-title">OUR PRODUCT RANGE</h2>
+            <p style="color:var(--grey);margin-top:1rem;font-size:1rem;">Click any category to explore our full collection</p>
+        </div>
+
+        <div class="categories-grid">
+            {% for cat_key, cat_info in categories %}
+            <a href="{% url 'product_category' cat_key %}" class="category-card reveal">
+                <span class="cat-icon">{{ cat_info.icon }}</span>
+                <div class="cat-name">{{ cat_info.name }}</div>
+                <div class="cat-desc">{{ cat_info.description }}</div>
+                <div class="cat-arrow">Shop Now <i class="fas fa-arrow-right"></i></div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED IMAGES -->
+{% if featured_images %}
+<section class="featured-section">
+    <div class="featured-container">
+        <div class="reveal" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+            <div>
+                <div class="section-label">Handpicked</div>
+                <h2 class="section-title">FEATURED PIECES</h2>
+            </div>
+            <a href="{% url 'product_category' 'tshirts' %}" class="btn-outline">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="featured-grid">
+            {% for img in featured_images %}
+            <div class="featured-img-card reveal">
+                <img src="{{ img.image.url }}" alt="{{ img.title|default:'Export Surplus Garment' }}" loading="lazy">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ADDRESSES -->
+<section class="address-section">
+    <div class="address-container">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">Visit Us</div>
+            <h2 class="section-title">FIND OUR STORES</h2>
+        </div>
+
+        <div class="address-cards">
+            <div class="address-card reveal">
+                <div class="address-card-header">
+                    <i class="fas fa-warehouse" style="font-size:1.3rem;color:var(--black)"></i>
+                    <h3>WHOLESALE</h3>
+                </div>
+                <div class="address-card-body">
+                    <p class="address-text">
+                        4th Cross Street, Behind Shanthi Theatre,<br>
+                        Thirumalai Nagar, Nesavalur Colony,<br>
+                        <strong style="color:var(--white)">Tirupur, Tamil Nadu</strong>
+                    </p>
+                    <a href="tel:+918870165008" class="address-phone">
+                        <i class="fas fa-phone"></i> +91 88701 65008
+                    </a>
+                    <div style="display:flex;gap:0.7rem;flex-wrap:wrap;">
+                        <a href="https://wa.me/918870165008" target="_blank" class="btn-gold" style="padding:10px 18px;font-size:0.8rem;">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://www.google.com/maps/search/4th+Cross+Street+Behind+Shanthi+Theatre+Thirumalai+Nagar+Nesavalur+Colony+Tirupur" target="_blank" class="btn-outline" style="padding:10px 18px;font-size:0.8rem;">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="address-card reveal">
+                <div class="address-card-header">
+                    <i class="fas fa-shopping-bag" style="font-size:1.3rem;color:var(--black)"></i>
+                    <h3>RETAIL</h3>
+                </div>
+                <div class="address-card-body">
+                    <p class="address-text">
+                        30/3/51, 2nd Street, Nayaki Tex Complex,<br>
+                        Nesavalur Colony, P.N Road,<br>
+                        <strong style="color:var(--white)">Tirupur, Tamil Nadu</strong>
+                    </p>
+                    <a href="tel:+918870165008" class="address-phone">
+                        <i class="fas fa-phone"></i> +91 88701 65008
+                    </a>
+                    <div style="display:flex;gap:0.7rem;flex-wrap:wrap;">
+                        <a href="https://wa.me/918870165008" target="_blank" class="btn-gold" style="padding:10px 18px;font-size:0.8rem;">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://www.google.com/maps/search/30+3+51+2nd+Street+Nayaki+Tex+Complex+Nesavalur+Colony+P.N+Road+Tirupur" target="_blank" class="btn-outline" style="padding:10px 18px;font-size:0.8rem;">
+                            <i class="fas fa-map-marker-alt"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="cta-content reveal">
+        <h2>READY TO SHOP <span style="color:var(--gold)">ORIGINALS?</span></h2>
+        <p>Contact us on WhatsApp for bulk orders, price lists, and availability. We serve customers across India!</p>
+        <div class="cta-buttons">
+            <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20know%20about%20your%20export%20surplus%20garments" target="_blank" class="btn-gold">
+                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+            </a>
+            <a href="{% url 'contact' %}" class="btn-outline">
+                <i class="fas fa-envelope"></i> Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+{% endblock %}

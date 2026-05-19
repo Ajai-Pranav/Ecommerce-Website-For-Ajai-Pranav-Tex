@@ -1,0 +1,309 @@
+{% extends 'store/base.html' %}
+{% block title %}Contact Us - AJAI PRANAV TEX | Tirupur{% endblock %}
+
+{% block extra_head %}
+<style>
+.page-hero {
+    padding: 7rem 2rem 4rem;
+    background: var(--dark);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-hero::before {
+    content: 'CONTACT';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: 20rem;
+    color: rgba(255,255,255,0.015);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.contact-section { padding: 5rem 2rem; background: var(--black); }
+.contact-container { max-width: 1100px; margin: 0 auto; }
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    transition: all 0.3s;
+}
+
+.contact-card:hover {
+    border-color: var(--gold);
+    transform: translateX(6px);
+}
+
+.contact-card-icon {
+    width: 48px; height: 48px;
+    background: var(--gold);
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    color: var(--black);
+}
+
+.contact-card-title {
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-card-body {
+    color: var(--grey);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.contact-card-body a {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.wa-big {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #128C7E, #25D366);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+}
+
+.wa-big:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(37,211,102,0.3); }
+
+.wa-big-icon { font-size: 2.5rem; }
+
+.wa-big-text strong {
+    display: block;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.wa-big-text span {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.85rem;
+}
+
+/* Maps */
+.maps-section { padding: 5rem 2rem; background: var(--dark); }
+.maps-container { max-width: 1100px; margin: 0 auto; }
+
+.maps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.map-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.map-card-header {
+    background: var(--gold);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-card-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--black);
+    letter-spacing: 2px;
+}
+
+.map-card iframe {
+    width: 100%;
+    height: 280px;
+    border: none;
+    display: block;
+}
+
+.map-card-footer {
+    padding: 1rem 1.5rem;
+    color: var(--grey);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .maps-grid { grid-template-columns: 1fr; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+    <div class="section-label">Get In Touch</div>
+    <h1 class="section-title">CONTACT US</h1>
+    <p style="color:var(--grey);margin-top:1rem;font-size:1rem;max-width:500px;margin-left:auto;margin-right:auto;">
+        Reach out for wholesale enquiries, retail orders, or any questions about our export surplus garments.
+    </p>
+</div>
+
+<section class="contact-section">
+    <div class="contact-container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-card-icon"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <div class="contact-card-title">Call / WhatsApp</div>
+                        <div class="contact-card-body">
+                            <a href="tel:+918870165008">+91 88701 65008</a><br>
+                            Available for calls and WhatsApp messages
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-card-icon"><i class="fas fa-warehouse"></i></div>
+                    <div>
+                        <div class="contact-card-title">Wholesale Address</div>
+                        <div class="contact-card-body">
+                            4th Cross Street, Behind Shanthi Theatre,<br>
+                            Thirumalai Nagar, Nesavalur Colony,<br>
+                            Tirupur, Tamil Nadu
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-card-icon"><i class="fas fa-shopping-bag"></i></div>
+                    <div>
+                        <div class="contact-card-title">Retail Address</div>
+                        <div class="contact-card-body">
+                            30/3/51, 2nd Street, Nayaki Tex Complex,<br>
+                            Nesavalur Colony, P.N Road,<br>
+                            Tirupur, Tamil Nadu
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20your%20export%20surplus%20garments" target="_blank" class="wa-big">
+                    <div class="wa-big-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="wa-big-text">
+                        <strong>Chat on WhatsApp</strong>
+                        <span>Click to open WhatsApp chat with us directly</span>
+                    </div>
+                    <i class="fas fa-arrow-right" style="color:white;margin-left:auto;"></i>
+                </a>
+            </div>
+
+            <div>
+                <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;">
+                    <h3 style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px;margin-bottom:0.5rem;color:var(--gold);">QUICK ENQUIRY</h3>
+                    <p style="color:var(--grey);font-size:0.9rem;margin-bottom:1.5rem;">Send us a WhatsApp message directly for the fastest response.</p>
+
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20T-Shirts" target="_blank" class="btn-outline" style="justify-content:center;">
+                            👕 Enquire about T-Shirts
+                        </a>
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20Track%20Pants" target="_blank" class="btn-outline" style="justify-content:center;">
+                            👖 Enquire about Track Pants
+                        </a>
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20Hoodies" target="_blank" class="btn-outline" style="justify-content:center;">
+                            🧥 Enquire about Hoodies
+                        </a>
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20Shorts" target="_blank" class="btn-outline" style="justify-content:center;">
+                            🩳 Enquire about Shorts
+                        </a>
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20enquire%20about%20Baby%20Garments" target="_blank" class="btn-outline" style="justify-content:center;">
+                            👶 Enquire about Baby Garments
+                        </a>
+                        <a href="https://wa.me/918870165008?text=Hi%2C%20I%20want%20to%20place%20a%20bulk%20wholesale%20order" target="_blank" class="btn-gold" style="justify-content:center;">
+                            <i class="fas fa-boxes"></i> Wholesale Bulk Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Maps -->
+<section class="maps-section">
+    <div class="maps-container">
+        <div style="text-align:center;">
+            <div class="section-label">Find Us</div>
+            <h2 class="section-title">OUR LOCATIONS</h2>
+        </div>
+
+        <div class="maps-grid">
+            <div class="map-card">
+                <div class="map-card-header">
+                    <i class="fas fa-warehouse" style="color:var(--black);font-size:1.1rem;"></i>
+                    <h3>WHOLESALE STORE</h3>
+                </div>
+                <iframe
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=Thirumalai+Nagar+Nesavalur+Colony+Tirupur+Tamil+Nadu"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                <div class="map-card-footer">
+                    <i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:6px;"></i>
+                    4th Cross Street, Behind Shanthi Theatre, Thirumalai Nagar, Nesavalur Colony, Tirupur
+                    <br><br>
+                    <a href="https://www.google.com/maps/search/4th+Cross+Street+Behind+Shanthi+Theatre+Thirumalai+Nagar+Nesavalur+Colony+Tirupur" target="_blank" style="color:var(--gold);font-weight:600;font-size:0.85rem;">
+                        <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                    </a>
+                </div>
+            </div>
+
+            <div class="map-card">
+                <div class="map-card-header">
+                    <i class="fas fa-shopping-bag" style="color:var(--black);font-size:1.1rem;"></i>
+                    <h3>RETAIL STORE</h3>
+                </div>
+                <iframe
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=Nayaki+Tex+Complex+P.N+Road+Nesavalur+Colony+Tirupur+Tamil+Nadu"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                <div class="map-card-footer">
+                    <i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:6px;"></i>
+                    30/3/51, 2nd Street, Nayaki Tex Complex, Nesavalur Colony, P.N Road, Tirupur
+                    <br><br>
+                    <a href="https://www.google.com/maps/search/Nayaki+Tex+Complex+P.N+Road+Nesavalur+Colony+Tirupur" target="_blank" style="color:var(--gold);font-weight:600;font-size:0.85rem;">
+                        <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

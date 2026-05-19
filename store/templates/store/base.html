@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AJAI PRANAV TEX - Export Surplus Garments | Tirupur{% endblock %}</title>
+    <meta name="description" content="Ajai Pranav Tex - Premium export surplus garments at wholesale and retail prices in Tirupur. Original brand surplus T-Shirts, Track Pants, Hoodies, Shorts & Baby Clothes.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black: #0a0a0a;
+            --dark: #111111;
+            --card: #1a1a1a;
+            --border: #2a2a2a;
+            --gold: #c8952a;
+            --gold-light: #e8b84b;
+            --gold-dim: rgba(200,149,42,0.15);
+            --white: #f5f5f0;
+            --grey: #888888;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            height: 60px;
+            background: rgba(10,10,10,0.98);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px; height: 40px;
+            background: var(--gold);
+            border-radius: 8px;
+            display: grid; place-items: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--white);
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .nav-logo-text span { color: var(--gold); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--grey);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-wa {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-wa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37,211,102,0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--white);
+            transition: all 0.3s;
+        }
+
+        /* ── MOBILE NAV ── */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px; left: 0; right: 0;
+            background: var(--dark);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+            z-index: 999;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav.open { display: flex; }
+
+        .mobile-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .footer-brand p {
+            color: var(--grey);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-top: 1rem;
+        }
+
+        .footer-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer-links a { color: var(--grey); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+
+        .footer-contact { display: flex; flex-direction: column; gap: 0.8rem; }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; color: var(--grey); font-size: 0.85rem; line-height: 1.5; }
+        .footer-contact-item i { color: var(--gold); margin-top: 2px; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 1.5rem auto 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--grey);
+            font-size: 0.8rem;
+        }
+
+        .social-links { display: flex; gap: 1rem; }
+        .social-links a {
+            width: 36px; height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: grid; place-items: center;
+            color: var(--grey);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ── UTILS ── */
+        .btn-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gold);
+            color: var(--black);
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(200,149,42,0.4);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--white);
+            padding: 11px 27px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-wa { display: none; }
+            .hamburger { display: flex; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+    <a href="{% url 'home' %}" class="nav-logo">
+        <div class="nav-logo-icon">👕</div>
+        <div class="nav-logo-text">AJAI <span>PRANAV</span> TEX</div>
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'product_category' 'tshirts' %}">Products</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+
+    <a href="https://wa.me/918870165008" target="_blank" class="nav-wa">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+    </a>
+
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{% url 'product_category' 'tshirts' %}"><i class="fas fa-tshirt"></i> Products</a>
+    <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+    <a href="https://wa.me/918870165008" target="_blank" style="color:#25D366"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<main style="padding-top: 70px;">
+    {% if messages %}
+    <div style="position:fixed;top:80px;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:0.5rem;">
+        {% for message in messages %}
+        <div style="background:{% if message.tags == 'error' %}#e53e3e{% else %}#38a169{% endif %};color:white;padding:12px 20px;border-radius:8px;font-size:0.9rem;box-shadow:0 4px 20px rgba(0,0,0,0.3);animation:slideIn 0.3s ease;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <div style="font-family:var(--font-display);font-size:1.8rem;letter-spacing:2px;">
+                AJAI <span style="color:var(--gold)">PRANAV</span> TEX
+            </div>
+            <p>Your trusted source for 100% original export surplus garments from top international brands. Serving Tirupur and all over India since years with quality you can trust.</p>
+            <div style="margin-top:1rem;">
+                <a href="https://wa.me/918870165008" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:10px 20px;border-radius:25px;text-decoration:none;font-size:0.85rem;font-weight:600;">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <div class="footer-title">QUICK LINKS</div>
+            <ul class="footer-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'product_category' 'tshirts' %}">T-Shirts</a></li>
+                <li><a href="{% url 'product_category' 'trackpants' %}">Track Pants</a></li>
+                <li><a href="{% url 'product_category' 'shorts' %}">Shorts</a></li>
+                <li><a href="{% url 'product_category' 'hoodies' %}">Hoodies</a></li>
+                <li><a href="{% url 'product_category' 'babies' %}">Baby Garments</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="footer-title">CONTACT US</div>
+            <div class="footer-contact">
+                <div class="footer-contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div><a href="tel:+918870165008" style="color:var(--grey);text-decoration:none;">+91 88701 65008</a></div>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-store"></i>
+                    <div><strong style="color:var(--white);">Wholesale:</strong><br>4th Cross Street, Behind Shanthi Theatre, Thirumalai Nagar, Nesavalur Colony, Tirupur</div>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <div><strong style="color:var(--white);">Retail:</strong><br>30/3/51, 2nd Street, Nayaki Tex Complex, Nesavalur Colony, P.N Road, Tirupur</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div>© 2024 AJAI PRANAV TEX. All rights reserved. | Tirupur, Tamil Nadu</div>
+        <div class="social-links">
+            <a href="https://wa.me/918870165008" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="tel:+918870165008"><i class="fas fa-phone"></i></a>
+        </div>
+    </div>
+</footer>
+
+<style>
+@keyframes slideIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+</style>
+
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile nav
+    function toggleMobileNav() {
+        document.getElementById('mobileNav').classList.toggle('open');
+    }
+
+    // Auto-hide messages
+    setTimeout(() => {
+        document.querySelectorAll('[style*="position:fixed;top:80px"]').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transition = 'opacity 0.5s';
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 4000);
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,581 @@
+{% extends 'store/base.html' %}
+{% block title %}Admin Dashboard - AJAI PRANAV TEX{% endblock %}
+
+{% block extra_head %}
+<style>
+.admin-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 70px);
+}
+
+/* Sidebar */
+.admin-sidebar {
+    background: var(--dark);
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    position: sticky;
+    top: 70px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+.sidebar-logo {
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-logo-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+}
+
+.sidebar-logo-sub {
+    color: var(--grey);
+    font-size: 0.75rem;
+    margin-top: 0.2rem;
+}
+
+.sidebar-section-label {
+    padding: 0 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 1.5rem;
+    color: var(--grey);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    color: var(--white);
+    background: rgba(200,149,42,0.08);
+    border-left-color: var(--gold);
+}
+
+.sidebar-link i { width: 18px; text-align: center; }
+
+.sidebar-divider { height: 1px; background: var(--border); margin: 1rem 1.5rem; }
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 1.5rem;
+    color: #fc8181;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+
+.logout-btn:hover { background: rgba(229,62,62,0.1); }
+
+/* Main content */
+.admin-main { padding: 2rem; background: var(--black); }
+
+/* Stats bar */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.3s;
+}
+
+.stat-card:hover { border-color: var(--gold); }
+
+.stat-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--gold);
+    line-height: 1;
+}
+
+.stat-label {
+    color: var(--grey);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+}
+
+/* Upload section */
+.upload-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.upload-section-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.admin-form-group { margin-bottom: 1rem; }
+
+.admin-label {
+    display: block;
+    color: var(--grey);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.admin-input, .admin-select, .admin-textarea {
+    width: 100%;
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    transition: border-color 0.3s;
+    outline: none;
+}
+
+.admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+    border-color: var(--gold);
+}
+
+.admin-select option { background: var(--dark); }
+
+.file-drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    background: var(--dark);
+}
+
+.file-drop-zone:hover, .file-drop-zone.drag-over {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+}
+
+.file-drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.file-drop-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--grey); }
+.file-drop-text { color: var(--grey); font-size: 0.9rem; }
+.file-drop-text strong { color: var(--gold); }
+.file-count { color: var(--gold); font-weight: 700; margin-top: 0.3rem; font-size: 0.85rem; }
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--grey);
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.checkbox-label input { accent-color: var(--gold); width: 16px; height: 16px; }
+
+/* Images table */
+.images-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.images-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.images-header-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--grey);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+}
+
+.filter-tab:hover, .filter-tab.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-dim);
+}
+
+.images-grid-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.admin-img-card {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.admin-img-card:hover { border-color: var(--gold); }
+
+.admin-img-thumb {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+}
+
+.admin-img-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.featured-ribbon {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+}
+
+.admin-img-info {
+    padding: 0.8rem;
+}
+
+.admin-img-cat {
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+.admin-img-title {
+    color: var(--white);
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-img-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.btn-sm {
+    flex: 1;
+    padding: 6px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.btn-sm-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(200,149,42,0.3); }
+.btn-sm-gold:hover { background: var(--gold); color: var(--black); }
+.btn-sm-red { background: rgba(229,62,62,0.1); color: #fc8181; border: 1px solid rgba(229,62,62,0.3); }
+.btn-sm-red:hover { background: rgba(229,62,62,0.3); }
+
+.empty-admin {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--grey);
+}
+
+@media (max-width: 768px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar { display: none; }
+    .upload-form-grid { grid-template-columns: 1fr; }
+    .images-grid-admin { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-title">ADMIN PANEL</div>
+            <div class="sidebar-logo-sub">AJAI PRANAV TEX</div>
+        </div>
+
+        <div class="sidebar-section-label">Navigation</div>
+        <a href="{% url 'admin_dashboard' %}" class="sidebar-link active">
+            <i class="fas fa-th-large"></i> Dashboard
+        </a>
+        <a href="{% url 'home' %}" target="_blank" class="sidebar-link">
+            <i class="fas fa-external-link-alt"></i> View Website
+        </a>
+
+        <div class="sidebar-section-label" style="margin-top:1rem;">Product Categories</div>
+        {% for cat, label, count, icon in categories_with_counts %}
+        <a href="#" class="sidebar-link" onclick="filterImages('{{ cat }}', this); return false;">
+            <span>{{ icon }}</span> {{ label }}
+            <span style="margin-left:auto;background:var(--gold-dim);color:var(--gold);padding:2px 8px;border-radius:100px;font-size:0.7rem;">{{ count }}</span>
+        </a>
+        {% endfor %}
+
+        <div class="sidebar-divider"></div>
+
+        <form method="post" action="{% url 'admin_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-num">{{ total }}</div>
+                <div class="stat-label">Total Images</div>
+            </div>
+            {% for cat, label, count, icon in categories_with_counts %}
+            <div class="stat-card">
+                <div style="font-size:1.5rem;">{{ icon }}</div>
+                <div class="stat-num">{{ count }}</div>
+                <div class="stat-label">{{ label }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Upload Form -->
+        <div class="upload-section">
+            <div class="upload-section-title">
+                <i class="fas fa-cloud-upload-alt"></i> Upload New Images
+            </div>
+
+            <form method="post" action="{% url 'admin_upload' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-form-grid">
+                    <div>
+                        <div class="admin-form-group">
+                            <label class="admin-label">Category *</label>
+                            <select name="category" class="admin-select" required>
+                                <option value="">-- Select Category --</option>
+                                {% for cat, label in categories %}
+                                <option value="{{ cat }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-label">Title (Optional)</label>
+                            <input type="text" name="title" class="admin-input" placeholder="e.g. Nike T-Shirt Blue">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-label">Description (Optional)</label>
+                            <textarea name="description" class="admin-textarea" rows="3" placeholder="Brief description..."></textarea>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_featured"> Feature on Homepage
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="admin-label">Select Images * (Multiple allowed)</label>
+                        <div class="file-drop-zone" id="dropZone">
+                            <input type="file" name="images" id="fileInput" multiple accept="image/*" onchange="updateFileCount(this)">
+                            <div class="file-drop-icon">📁</div>
+                            <div class="file-drop-text">
+                                <strong>Click to browse</strong> or drag & drop<br>
+                                <small>JPG, PNG, WEBP supported</small>
+                            </div>
+                            <div class="file-count" id="fileCount"></div>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;padding:14px;">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload to Cloudinary
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="images-section">
+            <div class="images-header">
+                <div class="images-header-title"><i class="fas fa-images"></i> Product Images</div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterImages('all', this)">All ({{ total }})</button>
+                    {% for cat, label, count, icon in categories_with_counts %}
+                    <button class="filter-tab" onclick="filterImages('{{ cat }}', this)">{{ icon }} {{ label }} ({{ count }})</button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if images %}
+            <div class="images-grid-admin" id="imagesGrid">
+                {% for img in images %}
+                <div class="admin-img-card" data-category="{{ img.category }}">
+                    <div class="admin-img-thumb">
+                        <img src="{{ img.image.url }}" alt="{{ img.title|default:img.category }}" loading="lazy">
+                        {% if img.is_featured %}
+                        <span class="featured-ribbon">★ Featured</span>
+                        {% endif %}
+                    </div>
+                    <div class="admin-img-info">
+                        <div class="admin-img-cat">{{ img.get_category_display }}</div>
+                        <div class="admin-img-title">{{ img.title|default:"Untitled" }}</div>
+                        <div class="admin-img-actions">
+                            <form method="post" action="{% url 'admin_toggle_featured' img.id %}" style="flex:1">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-sm btn-sm-gold" style="width:100%" title="{% if img.is_featured %}Unfeature{% else %}Feature{% endif %}">
+                                    {% if img.is_featured %}★ Unfeature{% else %}☆ Feature{% endif %}
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'admin_delete' img.id %}" style="flex:1" onsubmit="return confirm('Delete this image?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-sm btn-sm-red" style="width:100%">
+                                    <i class="fas fa-trash"></i> Del
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-admin">
+                <div style="font-size:3rem;margin-bottom:1rem;">📷</div>
+                <h3 style="color:var(--white);font-family:var(--font-display);letter-spacing:2px;margin-bottom:0.5rem;">NO IMAGES YET</h3>
+                <p>Upload your first product images using the form above.</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateFileCount(input) {
+    const count = input.files.length;
+    document.getElementById('fileCount').textContent = count > 0 ? `${count} file(s) selected` : '';
+}
+
+function filterImages(category, btn) {
+    // Update active tab
+    if (btn) {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    const cards = document.querySelectorAll('.admin-img-card');
+    cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Drag and drop
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const fileInput = document.getElementById('fileInput');
+    fileInput.files = e.dataTransfer.files;
+    updateFileCount(fileInput);
+});
+</script>
+{% endblock %}
